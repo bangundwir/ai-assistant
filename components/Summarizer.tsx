@@ -2,6 +2,11 @@
 
 import { useState } from 'react';
 import { callOpenRouterAPI } from '../services/openRouterService';
+import { Button } from "@/components/ui/button"
+import { Textarea } from "@/components/ui/textarea"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
+import { Label } from "@/components/ui/label"
 
 const Summarizer = () => {
   const [text, setText] = useState('');
@@ -35,45 +40,44 @@ const Summarizer = () => {
   };
 
   return (
-    <main className="flex-1 p-8">
-      <h1 className="text-3xl font-bold mb-4">Summarizer</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="text" className="block mb-2">Text to summarize</label>
-          <textarea
-            id="text"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            className="w-full p-2 rounded bg-gray-200 text-gray-800"
-            rows={8}
-            required
-          />
-        </div>
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="useStream"
-            checked={useStream}
-            onChange={(e) => setUseStream(e.target.checked)}
-            className="mr-2"
-          />
-          <label htmlFor="useStream">Enable streaming</label>
-        </div>
-        <button
-          type="submit"
-          className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 disabled:bg-blue-400"
-          disabled={isLoading}
-        >
-          {isLoading ? 'Summarizing...' : 'Summarize'}
-        </button>
-      </form>
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardHeader>
+        <CardTitle>Summarizer</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="text">Text to summarize</Label>
+            <Textarea
+              id="text"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              rows={8}
+              required
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="useStream"
+              checked={useStream}
+              onCheckedChange={(checked) => setUseStream(checked as boolean)}
+            />
+            <Label htmlFor="useStream">Enable streaming</Label>
+          </div>
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? 'Summarizing...' : 'Summarize'}
+          </Button>
+        </form>
+      </CardContent>
       {summary && (
-        <div className="mt-4">
-          <h3 className="text-xl font-bold mb-2">Summary:</h3>
-          <p className="bg-gray-200 p-4 rounded">{summary}</p>
-        </div>
+        <CardFooter>
+          <div className="w-full">
+            <h3 className="text-xl font-bold mb-2">Summary:</h3>
+            <p className="bg-gray-100 p-4 rounded">{summary}</p>
+          </div>
+        </CardFooter>
       )}
-    </main>
+    </Card>
   );
 };
 

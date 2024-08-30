@@ -3,6 +3,9 @@
 import { useState } from 'react';
 import TranslateForm from './TranslateForm';
 import { useTranslation } from '../hooks/useTranslation';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
 
 const MainContent = () => {
   const { result, isLoading, translate } = useTranslation();
@@ -13,27 +16,30 @@ const MainContent = () => {
   };
 
   return (
-    <main className="flex-1 p-8">
-      <h2 className="text-2xl font-bold mb-6">Translate</h2>
-      <div className="mb-4">
-        <label className="flex items-center">
-          <input
-            type="checkbox"
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardHeader>
+        <CardTitle>Translate</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="mb-4 flex items-center space-x-2">
+          <Checkbox
+            id="useStream"
             checked={useStream}
-            onChange={(e) => setUseStream(e.target.checked)}
-            className="mr-2"
+            onCheckedChange={(checked) => setUseStream(checked as boolean)}
           />
-          Enable streaming
-        </label>
-      </div>
-      <TranslateForm onTranslate={handleTranslate} isLoading={isLoading} />
-      {result && (
-        <div className="mt-4">
-          <h3 className="text-xl font-bold mb-2">Result:</h3>
-          <p className="bg-gray-200 p-4 rounded">{result}</p>
+          <Label htmlFor="useStream">Enable streaming</Label>
         </div>
+        <TranslateForm onTranslate={handleTranslate} isLoading={isLoading} />
+      </CardContent>
+      {result && (
+        <CardFooter>
+          <div className="w-full">
+            <h3 className="text-xl font-bold mb-2">Result:</h3>
+            <p className="bg-gray-100 p-4 rounded">{result}</p>
+          </div>
+        </CardFooter>
       )}
-    </main>
+    </Card>
   );
 };
 

@@ -2,6 +2,12 @@
 
 import { useState } from 'react';
 import { callOpenRouterAPI } from '../services/openRouterService';
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
+import { Label } from "@/components/ui/label"
 
 const EmailGenerator = () => {
   const [topic, setTopic] = useState('');
@@ -39,67 +45,64 @@ const EmailGenerator = () => {
   };
 
   return (
-    <main className="flex-1 p-8">
-      <h1 className="text-3xl font-bold mb-4">Email Generator</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="topic" className="block mb-2">Email Topic</label>
-          <input
-            type="text"
-            id="topic"
-            value={topic}
-            onChange={(e) => setTopic(e.target.value)}
-            className="w-full p-2 rounded bg-gray-200 text-gray-800"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="context" className="block mb-2">Context (optional)</label>
-          <textarea
-            id="context"
-            value={context}
-            onChange={(e) => setContext(e.target.value)}
-            className="w-full p-2 rounded bg-gray-200 text-gray-800"
-            rows={3}
-          />
-        </div>
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="useStream"
-              checked={useStream}
-              onChange={(e) => setUseStream(e.target.checked)}
-              className="mr-2"
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle className="text-2xl sm:text-3xl">Email Generator</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="topic">Email Topic</Label>
+            <Input
+              id="topic"
+              value={topic}
+              onChange={(e) => setTopic(e.target.value)}
+              required
+              className="w-full"
             />
-            <label htmlFor="useStream">Enable streaming</label>
           </div>
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="allowImprovisation"
-              checked={allowImprovisation}
-              onChange={(e) => setAllowImprovisation(e.target.checked)}
-              className="mr-2"
+          <div className="space-y-2">
+            <Label htmlFor="context">Context (optional)</Label>
+            <Textarea
+              id="context"
+              value={context}
+              onChange={(e) => setContext(e.target.value)}
+              rows={3}
+              className="w-full"
             />
-            <label htmlFor="allowImprovisation">Allow improvisation</label>
           </div>
-        </div>
-        <button
-          type="submit"
-          className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 disabled:bg-blue-400"
-          disabled={isLoading}
-        >
-          {isLoading ? 'Generating...' : 'Generate Email'}
-        </button>
-      </form>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="useStream"
+                checked={useStream}
+                onCheckedChange={(checked) => setUseStream(checked as boolean)}
+              />
+              <Label htmlFor="useStream">Enable streaming</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="allowImprovisation"
+                checked={allowImprovisation}
+                onCheckedChange={(checked) => setAllowImprovisation(checked as boolean)}
+              />
+              <Label htmlFor="allowImprovisation">Allow improvisation</Label>
+            </div>
+          </div>
+          <Button type="submit" disabled={isLoading} className="w-full">
+            {isLoading ? 'Generating...' : 'Generate Email'}
+          </Button>
+        </form>
+      </CardContent>
       {email && (
-        <div className="mt-4">
-          <h3 className="text-xl font-bold mb-2">Generated Email:</h3>
-          <pre className="bg-gray-200 p-4 rounded whitespace-pre-wrap">{email}</pre>
-        </div>
+        <CardFooter>
+          <div className="w-full">
+            <h3 className="text-xl font-bold mb-2">Generated Email:</h3>
+            <pre className="bg-gray-100 p-4 rounded whitespace-pre-wrap text-sm overflow-x-auto">{email}</pre>
+          </div>
+        </CardFooter>
       )}
-    </main>
+    </Card>
   );
 };
 

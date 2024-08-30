@@ -2,6 +2,10 @@
 
 import { useState } from 'react';
 import { callOpenRouterAPI } from '../services/openRouterService';
+import { Button } from "@/components/ui/button"
+import { Textarea } from "@/components/ui/textarea"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
 
 const CaptionGenerator = () => {
   const [imageDescription, setImageDescription] = useState('');
@@ -35,45 +39,44 @@ const CaptionGenerator = () => {
   };
 
   return (
-    <main className="flex-1 p-8">
-      <h1 className="text-3xl font-bold mb-4">Caption Generator</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="imageDescription" className="block mb-2">Image Description</label>
-          <textarea
-            id="imageDescription"
-            value={imageDescription}
-            onChange={(e) => setImageDescription(e.target.value)}
-            className="w-full p-2 rounded bg-gray-200 text-gray-800"
-            rows={4}
-            required
-          />
-        </div>
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="useStream"
-            checked={useStream}
-            onChange={(e) => setUseStream(e.target.checked)}
-            className="mr-2"
-          />
-          <label htmlFor="useStream">Enable streaming</label>
-        </div>
-        <button
-          type="submit"
-          className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 disabled:bg-blue-400"
-          disabled={isLoading}
-        >
-          {isLoading ? 'Generating...' : 'Generate Caption'}
-        </button>
-      </form>
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardHeader>
+        <CardTitle>Caption Generator</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <label htmlFor="imageDescription">Image Description</label>
+            <Textarea
+              id="imageDescription"
+              value={imageDescription}
+              onChange={(e) => setImageDescription(e.target.value)}
+              rows={4}
+              required
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="useStream"
+              checked={useStream}
+              onCheckedChange={(checked) => setUseStream(checked as boolean)}
+            />
+            <label htmlFor="useStream">Enable streaming</label>
+          </div>
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? 'Generating...' : 'Generate Caption'}
+          </Button>
+        </form>
+      </CardContent>
       {caption && (
-        <div className="mt-4">
-          <h3 className="text-xl font-bold mb-2">Generated Caption:</h3>
-          <p className="bg-gray-200 p-4 rounded">{caption}</p>
-        </div>
+        <CardFooter>
+          <div className="w-full">
+            <h3 className="text-xl font-bold mb-2">Generated Caption:</h3>
+            <p className="bg-gray-100 p-4 rounded">{caption}</p>
+          </div>
+        </CardFooter>
       )}
-    </main>
+    </Card>
   );
 };
 

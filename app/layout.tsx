@@ -1,7 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import Sidebar from '../components/Sidebar'
+import AppLayout from '../components/AppLayout'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,11 +17,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <div className="flex h-screen bg-gray-100 text-gray-800">
-          <Sidebar />
-          {children}
-        </div>
+      <head>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+      </head>
+      <body className={`${inter.className} font-sans`}>
+        <AppLayout>{children}</AppLayout>
       </body>
     </html>
   )

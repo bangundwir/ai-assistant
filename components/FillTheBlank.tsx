@@ -2,6 +2,10 @@
 
 import { useState } from 'react';
 import { callOpenRouterAPI } from '../services/openRouterService';
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
 
 const FillTheBlank = () => {
   const [sentence, setSentence] = useState('');
@@ -35,46 +39,45 @@ const FillTheBlank = () => {
   };
 
   return (
-    <main className="flex-1 p-8">
-      <h1 className="text-3xl font-bold mb-4">Fill the Blank</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="sentence" className="block mb-2">Sentence with [BLANK]</label>
-          <input
-            type="text"
-            id="sentence"
-            value={sentence}
-            onChange={(e) => setSentence(e.target.value)}
-            className="w-full p-2 rounded bg-gray-200 text-gray-800"
-            placeholder="The [BLANK] jumped over the [BLANK]."
-            required
-          />
-        </div>
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="useStream"
-            checked={useStream}
-            onChange={(e) => setUseStream(e.target.checked)}
-            className="mr-2"
-          />
-          <label htmlFor="useStream">Enable streaming</label>
-        </div>
-        <button
-          type="submit"
-          className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 disabled:bg-blue-400"
-          disabled={isLoading}
-        >
-          {isLoading ? 'Filling...' : 'Fill the Blank'}
-        </button>
-      </form>
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardHeader>
+        <CardTitle>Fill the Blank</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <label htmlFor="sentence">Sentence with [BLANK]</label>
+            <Input
+              type="text"
+              id="sentence"
+              value={sentence}
+              onChange={(e) => setSentence(e.target.value)}
+              placeholder="The [BLANK] jumped over the [BLANK]."
+              required
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="useStream"
+              checked={useStream}
+              onCheckedChange={(checked) => setUseStream(checked as boolean)}
+            />
+            <label htmlFor="useStream">Enable streaming</label>
+          </div>
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? 'Filling...' : 'Fill the Blank'}
+          </Button>
+        </form>
+      </CardContent>
       {filledSentence && (
-        <div className="mt-4">
-          <h3 className="text-xl font-bold mb-2">Filled Sentence:</h3>
-          <p className="bg-gray-200 p-4 rounded">{filledSentence}</p>
-        </div>
+        <CardFooter>
+          <div className="w-full">
+            <h3 className="text-xl font-bold mb-2">Filled Sentence:</h3>
+            <p className="bg-gray-100 p-4 rounded">{filledSentence}</p>
+          </div>
+        </CardFooter>
       )}
-    </main>
+    </Card>
   );
 };
 

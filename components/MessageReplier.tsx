@@ -2,6 +2,11 @@
 
 import { useState } from 'react';
 import { callOpenRouterAPI } from '../services/openRouterService';
+import { Button } from "@/components/ui/button"
+import { Textarea } from "@/components/ui/textarea"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
+import { Label } from "@/components/ui/label"
 
 const MessageReplier = () => {
   const [message, setMessage] = useState('');
@@ -39,67 +44,63 @@ const MessageReplier = () => {
   };
 
   return (
-    <main className="flex-1 p-8">
-      <h1 className="text-3xl font-bold mb-4">Message Replier</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="message" className="block mb-2">Message</label>
-          <textarea
-            id="message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className="w-full p-2 rounded bg-gray-200 text-gray-800"
-            rows={5}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="context" className="block mb-2">Context (optional)</label>
-          <textarea
-            id="context"
-            value={context}
-            onChange={(e) => setContext(e.target.value)}
-            className="w-full p-2 rounded bg-gray-200 text-gray-800"
-            rows={3}
-          />
-        </div>
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="useStream"
-              checked={useStream}
-              onChange={(e) => setUseStream(e.target.checked)}
-              className="mr-2"
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardHeader>
+        <CardTitle>Message Replier</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="message">Message</Label>
+            <Textarea
+              id="message"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              rows={5}
+              required
             />
-            <label htmlFor="useStream">Enable streaming</label>
           </div>
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="allowImprovisation"
-              checked={allowImprovisation}
-              onChange={(e) => setAllowImprovisation(e.target.checked)}
-              className="mr-2"
+          <div className="space-y-2">
+            <Label htmlFor="context">Context (optional)</Label>
+            <Textarea
+              id="context"
+              value={context}
+              onChange={(e) => setContext(e.target.value)}
+              rows={3}
             />
-            <label htmlFor="allowImprovisation">Allow improvisation</label>
           </div>
-        </div>
-        <button
-          type="submit"
-          className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 disabled:bg-blue-400"
-          disabled={isLoading}
-        >
-          {isLoading ? 'Generating...' : 'Generate Reply'}
-        </button>
-      </form>
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="useStream"
+                checked={useStream}
+                onCheckedChange={(checked) => setUseStream(checked as boolean)}
+              />
+              <Label htmlFor="useStream">Enable streaming</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="allowImprovisation"
+                checked={allowImprovisation}
+                onCheckedChange={(checked) => setAllowImprovisation(checked as boolean)}
+              />
+              <Label htmlFor="allowImprovisation">Allow improvisation</Label>
+            </div>
+          </div>
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? 'Generating...' : 'Generate Reply'}
+          </Button>
+        </form>
+      </CardContent>
       {reply && (
-        <div className="mt-4">
-          <h3 className="text-xl font-bold mb-2">Generated Reply:</h3>
-          <p className="bg-gray-200 p-4 rounded">{reply}</p>
-        </div>
+        <CardFooter>
+          <div className="w-full">
+            <h3 className="text-xl font-bold mb-2">Generated Reply:</h3>
+            <p className="bg-gray-100 p-4 rounded">{reply}</p>
+          </div>
+        </CardFooter>
       )}
-    </main>
+    </Card>
   );
 };
 
